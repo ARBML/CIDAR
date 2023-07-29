@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Hello, world!</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href="#">
+            Alpaca Arabic
+        </a>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-5">
+                <h3>English</h3>
+                <form>
+                    <div class="form-group">
+                        <label for="inst_en">Instruction</label>
+                        <input type="text" class="form-control" id="inst_en" />
+                        <span class="label label-default">Input</span>
+                        <input type="text" class="form-control" id="inp_en" />
+                        <label>Output</label>
+                        <textarea type="text" class="form-control" id="out_en"></textarea>
+                    </div>
+                    <button type="button" class="btn btn-default" onclick="getNext()">skip</button>
+                </form>
+
+            </div>
+
+            <div class="col-sm-5">
+                <h3>Arabic</h3>
+                <form action="/api/submit" method="post">
+                    <div class="form-group">
+                        <label for="inst">Instruction</label>
+                        <input type="text" dir="rtl" class="form-control" id="inst">
+                        <label for="inp">Input</label>
+                        <input type="text" dir="rtl" class="form-control" id="inp">
+                        <label for="out">Output</label>
+                        <textarea type="text" dir="rtl" class="form-control" id="out"> </textarea>
+                        <label id="idx" name="idx"></label>
+                    </div>
+                    <input type="submit" class="btn btn-info" value="submit" />
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script src="{{url_for('static', filename='javascript/main.js')}}"></script>
+
+</body>
+
+</html>

@@ -6,4 +6,8 @@
 
 ## Run the app
 
-`streamlit run app.py`
+```
+export FLASK_APP=app
+export FLASK_ENV=development
+flask run 
+```
