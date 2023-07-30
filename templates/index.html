@@ -7,9 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <title>Hello, world!</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Alpaca Arabic</title>
 </head>
 
 <body>
@@ -20,54 +20,86 @@
     </nav>
     <div class="container">
         <div class="row">
-            <div class="col-sm-5">
-                <h3>English</h3>
-                <form>
-                    <div class="form-group">
+            <div class="alert alert-light" role="alert">
+                <p class="lead">
+                    The Alpaca translation tool aims to fix the issues in translating the Alpaca dataset using ChatGPT.
+                </p>
+
+                <ol class="list-group list-group-numbered">
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                            <div class="fw-bold">Fix Grammatical Issues</div>
+                            Some words might not be translated correctly especially at the start, we want all the
+                            statements to start by a question
+                            For example تحديد should be replaced by حدد or قم بتحديد
+                        </div>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                            <div class="fw-bold">Fix Translation Issues</div>
+                            Some inputs or outputs might not be translted. Also, some instructions might be specific to
+                            English please give their corropsonding
+                            examples in Arabic.
+                        </div>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                            <div class="fw-bold">Fix Origianl Alpaca</div>
+                            Some examples in the original English Alpaca might not be correct. For example some
+                            insturctions might have some missing inputs.
+                        </div>
+                    </li>
+            </div>
+
+            <form action="/api/submit" method="post">
+                <div class="row">
+                    <div class="col-sm-5">
+                        <h3>English</h3>
                         <label for="inst_en">Instruction</label>
-                        <input type="text" class="form-control" id="inst_en" />
-                        <span class="label label-default">Input</span>
-                        <input type="text" class="form-control" id="inp_en" />
+                        <input type="text" class="form-control" id="inst_en" name="inst_en" />
+                        <label for="inp_en">Input</label>
+                        <input type="text" class="form-control" id="inp_en" name="inp_en" />
                         <label>Output</label>
-                        <textarea type="text" class="form-control" id="out_en"></textarea>
+                        <textarea type="text" class="form-control" id="out_en" name="out_en" rows="10"></textarea>
                     </div>
-                    <button type="button" class="btn btn-default" onclick="getNext()">skip</button>
-                </form>
-
-            </div>
-
-            <div class="col-sm-5">
-                <h3>Arabic</h3>
-                <form action="/api/submit" method="post">
-                    <div class="form-group">
+                    <div class="col-sm-5">
+                        <h3>Arabic</h3>
                         <label for="inst">Instruction</label>
-                        <input type="text" dir="rtl" class="form-control" id="inst">
+                        <input type="text" dir="rtl" class="form-control" id="inst" name="inst">
                         <label for="inp">Input</label>
-                        <input type="text" dir="rtl" class="form-control" id="inp">
+                        <input type="text" dir="rtl" class="form-control" id="inp" name="inp">
                         <label for="out">Output</label>
-                        <textarea type="text" dir="rtl" class="form-control" id="out"> </textarea>
-                        <label id="idx" name="idx"></label>
+                        <textarea type="text" dir="rtl" class="form-control" id="out" name="out" rows="10"> </textarea>
                     </div>
-                    <input type="submit" class="btn btn-info" value="submit" />
-                </form>
 
-            </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-5">
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-outline-primary" onclick="getNext()">skip</button>
+                            <button type="submit" class="btn btn-outline-primary"> Submit</button>
+                        </div>
+                    </div>
 
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control w-25" id="idx" name="idx" readonly>
+                    </div>
+            </form>
         </div>
-    </div>
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"></script>
-    <script src="{{url_for('static', filename='javascript/main.js')}}"></script>
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+
+        <script src="{{url_for('static', filename='javascript/main.js')}}"></script>
 
 </body>
 

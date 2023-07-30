@@ -1,48 +1,63 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, url_for
 from flask import request, jsonify
 from datasets import load_dataset
 import random 
+import json 
+import os 
 
 app = Flask(__name__)
 
-alpaca_arabic = load_dataset('arbml/alpaca_arabic')
-new_column = list(range(len(alpaca_arabic['train'])))
-alpaca_arabic['train'] = alpaca_arabic['train'].add_column("index", new_column)
+def load_data():
+    alpaca_arabic = load_dataset('arbml/alpaca_arabic')
+    new_column = list(range(len(alpaca_arabic['train'])))
+    alpaca_arabic['train'] = alpaca_arabic['train'].add_column("index", new_column)
 
-def filter_english(example):
-    alphabets = 'abcdefghijklmnopqrstuvwxyz'
-    for alph in alphabets:
-        if alph in example['instruction']+example['input']+example['output']:
-            return True
-    return False
+    def filter_english(example):
+        alphabets = 'abcdefghijklmnopqrstuvwxyz'
+        for alph in alphabets:
+            if alph in example['instruction']+example['input']+example['output']:
+                return True
+        return False
 
-def filter_arabic(example):
-    alphabets = 'abcdefghijklmnopqrstuvwxyz'
-    for alph in alphabets:
-        if alph in example['instruction']+example['input']+example['output']:
-            return False
-    return True
+    english_data = alpaca_arabic.filter(filter_english)
+    all_indices = set([sample['index'] for sample in english_data['train']])
 
-english_data = alpaca_arabic.filter(filter_english)
-arabic_data = alpaca_arabic.filter(filter_arabic)
-english_data['train'] = english_data['train'].select(range(100))
-all_indices = set([sample['index'] for sample in english_data['train']])
-print(all_indices)
+    return all_indices, alpaca_arabic
+
+def save_json(entry):
+    data = {}
+    if os.path.exists('static/data/dataset.json'):
+        with open('static/data/dataset.json') as f:
+            data = json.load(f)
+
+        data.update(entry)
+    else:
+        data = entry
+
+    with open('static/data/dataset.json', 'w') as f:
+        json.dump(data, f, ensure_ascii = False, indent=2)
+
+all_indices, alpaca_arabic = load_data()
+
+
 @app.route('/api/submit',methods = ['POST', 'GET'])
 def submit():
     if request.method == 'POST':
-        inst = request.form['inst']
-        inp = request.form['inp']
-        out = request.form['out']
-        idx = request.form['idx']
-        open('dataset.csv', 'a').write('\n'+ ','.join([inst, inp, out]))
-        open('finished_indices.txt', 'a').write(' '+str(idx))
-    return render_template('index.html')
+        element = {k:request.form[k] for k in request.form}
+        idx = element['idx']
+        print(element)
+        save_json({idx: element})
+        open('static/data/finished_indices.txt', 'a').write(' '+str(idx))
+    return redirect(url_for('index'))
    
 @app.route('/api/data')
 def send_data():
-    finished_indices = open('finished_indices.txt', 'r').read().strip()
-    finished_indices = set([int(ind) for ind in finished_indices.split(' ') if len(ind) > 0])
+    if os.path.exists('static/data/finished_indices.txt'):
+        finished_indices = open('static/data/finished_indices.txt', 'r').read().strip()
+        finished_indices = set([int(ind) for ind in finished_indices.split(' ') if len(ind) > 0])
+    else:
+        finished_indices = set()
+
     rem_indices = all_indices - finished_indices
     idx = random.choice(list(rem_indices))
     return jsonify(alpaca_arabic['train'][idx])
