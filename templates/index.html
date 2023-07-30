@@ -13,76 +13,117 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-light bg-light">
+    <!-- <nav class="navbar navbar-light bg-light">
         <a class="navbar-brand" href="#">
             Alpaca Arabic
         </a>
-    </nav>
+    </nav> -->
     <div class="container">
-        <div class="row">
-            <div class="alert alert-light" role="alert">
-                <p class="lead">
-                    The Alpaca translation tool aims to fix the issues in translating the Alpaca dataset using ChatGPT.
-                </p>
-
-                <ol class="list-group list-group-numbered">
-                    <li class="list-group-item d-flex justify-content-between align-items-start">
-                        <div class="ms-2 me-auto">
-                            <div class="fw-bold">Fix Grammatical Issues</div>
-                            Some words might not be translated correctly especially at the start, we want all the
-                            statements to start by a question
-                            For example تحديد should be replaced by حدد or قم بتحديد
-                        </div>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-start">
-                        <div class="ms-2 me-auto">
-                            <div class="fw-bold">Fix Translation Issues</div>
-                            Some inputs or outputs might not be translted. Also, some instructions might be specific to
-                            English please give their corropsonding
-                            examples in Arabic.
-                        </div>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-start">
-                        <div class="ms-2 me-auto">
-                            <div class="fw-bold">Fix Origianl Alpaca</div>
-                            Some examples in the original English Alpaca might not be correct. For example some
-                            insturctions might have some missing inputs.
-                        </div>
-                    </li>
+        <div class="row text-white bg-primary">
+            <div align="center">
+                <h1> Arabic Alpaca Annotation Tool
+                </h1>
             </div>
 
-            <form action="/api/submit" method="post">
-                <div class="row">
-                    <div class="col-sm-5">
+        </div>
+
+        <div class="row p-3 mb-2">
+            <div class="alert alert-light" role="alert">
+                <p>
+                    The Alpaca translation tool aims to create an Arabic version of the <a
+                        href="https://github.com/tatsu-lab/stanford_alpaca">Alpaca</a> dataset. We
+                    initially translted 52k samples using ChatGPT but around 10K of the samples have some issues.
+                    Here is a summary of some exmaples:
+                </p>
+                <div class="col-sm-12 bg-primary">
+                    <ol class="list-group list-group-numbered">
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold">Fix Grammatical Issues</div>
+                                Some words might not be translated correctly especially at the start, we want all the
+                                statements to start by a question
+                                For example تحديد should be replaced by حدد or قم بتحديد
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold">Fix Translation Issues</div>
+                                Some inputs or outputs might not be translted. Also, some instructions might be specific
+                                to
+                                English please give their corropsonding
+                                examples in Arabic.
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold">Fix Origianl Alpaca</div>
+                                Some examples in the original English Alpaca might not be correct. For example some
+                                insturctions might have some missing inputs.
+                            </div>
+                        </li>
+                </div>
+
+            </div>
+
+            <form action="/api/submit" method="post" id="theForm">
+                <div class="row bg-primary text-white p-3 mb-2 ">
+                    <div class="col-sm-6">
                         <h3>English</h3>
                         <label for="inst_en">Instruction</label>
-                        <input type="text" class="form-control" id="inst_en" name="inst_en" />
+                        <input type="text" class="form-control edittable" id="inst_en" name="inst_en" />
                         <label for="inp_en">Input</label>
-                        <input type="text" class="form-control" id="inp_en" name="inp_en" />
+                        <input type="text" class="form-control edittable" id="inp_en" name="inp_en" />
                         <label>Output</label>
-                        <textarea type="text" class="form-control" id="out_en" name="out_en" rows="10"></textarea>
+                        <textarea type="text" class="form-control edittable" id="out_en" name="out_en"
+                            rows="10"></textarea>
                     </div>
-                    <div class="col-sm-5">
+                    <div class="col-sm-6">
                         <h3>Arabic</h3>
                         <label for="inst">Instruction</label>
-                        <input type="text" dir="rtl" class="form-control" id="inst" name="inst">
+                        <input type="text" dir="rtl" class="form-control edittable" id="inst" name="inst">
                         <label for="inp">Input</label>
-                        <input type="text" dir="rtl" class="form-control" id="inp" name="inp">
+                        <input type="text" dir="rtl" class="form-control edittable" id="inp" name="inp">
                         <label for="out">Output</label>
-                        <textarea type="text" dir="rtl" class="form-control" id="out" name="out" rows="10"> </textarea>
+                        <textarea type="text" dir="rtl" class="form-control edittable" id="out" name="out"
+                            rows="10"> </textarea>
                     </div>
 
                 </div>
                 <div class="row">
-                    <div class="col-sm-5">
+                    <div class="col-sm-12" align="center">
                         <div class="btn-group" role="group">
                             <button type="button" class="btn btn-outline-primary" onclick="getNext()">skip</button>
-                            <button type="submit" class="btn btn-outline-primary"> Submit</button>
-                        </div>
-                    </div>
+                            <button type="button" class="btn btn-primary" onclick="checkChanges()">
+                                Submit
+                            </button>
 
-                    <div class="col-sm-5">
-                        <input type="text" class="form-control w-25" id="idx" name="idx" readonly>
+                            <!-- Modal -->
+                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title text-dark" id="exampleModalLabel">Empty Changes</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body text-dark">
+                                            You haven't added any changes, are you sure you want to submit?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary"
+                                                onclick="submitForm()">Submit</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="text" class="form-control" id="idx" name="idx" readonly>
+                            <label type="text" class="form-control" id="num_rem" name="num_rem" value="0">
+                        </div>
+
+
                     </div>
             </form>
         </div>

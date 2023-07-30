@@ -44,8 +44,7 @@ all_indices, alpaca_arabic = load_data()
 def submit():
     if request.method == 'POST':
         element = {k:request.form[k] for k in request.form}
-        idx = element['idx']
-        print(element)
+        idx = element['idx'].split(':')[1].strip()
         save_json({idx: element})
         open('static/data/finished_indices.txt', 'a').write(' '+str(idx))
     return redirect(url_for('index'))
@@ -60,7 +59,9 @@ def send_data():
 
     rem_indices = all_indices - finished_indices
     idx = random.choice(list(rem_indices))
-    return jsonify(alpaca_arabic['train'][idx])
+    element = alpaca_arabic['train'][idx]
+    element['num_rem'] = len(rem_indices)
+    return jsonify(element)
 
 @app.route('/')
 def index():
