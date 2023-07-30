@@ -32,6 +32,7 @@ def save_json(entry):
 
         data.update(entry)
     else:
+        os.makedirs('static/data')
         data = entry
 
     with open('static/data/dataset.json', 'w') as f:
