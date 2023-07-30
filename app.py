@@ -45,6 +45,7 @@ def submit():
     if request.method == 'POST':
         element = {k:request.form[k] for k in request.form}
         idx = element['idx'].split(':')[1].strip()
+        element['idx'] = idx
         save_json({idx: element})
         open('static/data/finished_indices.txt', 'a').write(' '+str(idx))
     return redirect(url_for('index'))
