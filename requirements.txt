@@ -1,2 +1,3 @@
 datasets
-flask==2.1.2
+flask>=2.0.0
+gunicorn>=20.1.0
