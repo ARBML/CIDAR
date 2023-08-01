@@ -1,0 +1,94 @@
+<div class="row p-3 mb-2 bg-light">
+    <p>
+        The Alpaca translation tool aims to create an Arabic version of the <a
+            href="https://github.com/tatsu-lab/stanford_alpaca">Alpaca</a> dataset. We
+        initially translted 52k samples using ChatGPT but around 10K of the samples have some issues.
+        Here is a summary of some exmaples:
+    </p>
+    <div class="col-sm-12 bg-primary">
+        <ol class="list-group list-group-numbered">
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+                <div class="ms-2 me-auto">
+                    <div class="fw-bold">Fix Grammatical Issues</div>
+                    Some words might not be translated correctly especially at the start, we want all the
+                    statements to start by a question
+                    For example تحديد should be replaced by حدد or قم بتحديد
+                </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+                <div class="ms-2 me-auto">
+                    <div class="fw-bold">Fix Translation Issues</div>
+                    Some inputs or outputs might not be translted. Also, some instructions might be specific
+                    to English please give their corropsonding examples in Arabic.
+                </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+                <div class="ms-2 me-auto">
+                    <div class="fw-bold">Fix Origianl Alpaca</div>
+                    Some examples in the original English Alpaca might not be correct. For example some
+                    insturctions might have some missing inputs.
+                </div>
+            </li>
+    </div>
+    <span class="badge rounded-pill bg-light text-dark" id="index"></span>
+    <form action="/api/submit" method="post" id="theForm">
+        <div class="row bg-primary text-white p-3 mb-2 ">
+            <div class="col-sm-6">
+                <h3>English</h3>
+                <label for="instruction_en">Instruction</label>
+                <input type="text" class="form-control edittable" id="instruction_en" name="instruction_en" />
+                <label for="input_en">Input</label>
+                <input type="text" class="form-control edittable" id="input_en" name="input_en" />
+                <label>Output</label>
+                <textarea type="text" class="form-control edittable" id="output_en" name="output_en"
+                    rows="10"></textarea>
+            </div>
+            <div class="col-sm-6">
+                <h3>Arabic</h3>
+                <label for="instruction">Instruction</label>
+                <input type="text" dir="rtl" class="form-control edittable" id="instruction" name="instruction">
+                <label for="input">Input</label>
+                <input type="text" dir="rtl" class="form-control edittable" id="input" name="input">
+                <label for="output">Output</label>
+                <textarea type="text" dir="rtl" class="form-control edittable" id="output" name="output"
+                    rows="10"> </textarea>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-sm-12" align="center">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-outline-primary" onclick="getNext()">skip</button>
+                    <button type="button" class="btn btn-primary" onclick="checkChanges()" id="submit">
+                        Submit
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title text-dark" id="exampleModalLabel">Empty Changes</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body text-dark">
+                                    You haven't added any changes, are you sure you want to submit?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary" onclick="submitForm()">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" class="form-control" id="index_input" name="index" readonly>
+
+                <span class="badge rounded-pill bg-light text-dark float-right" id="num_rem"></span>
+
+            </div>
+    </form>
+</div>

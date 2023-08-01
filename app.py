@@ -25,15 +25,14 @@ def load_data():
     return all_indices, alpaca_arabic
 
 def save_json(entry):
-    data = {}
     if os.path.exists('static/data/dataset.json'):
         with open('static/data/dataset.json') as f:
             data = json.load(f)
 
-        data.update(entry)
+        data.append(entry)
     else:
-        os.makedirs('static/data')
-        data = entry
+        os.makedirs('static/data', exist_ok=True)
+        data = [entry]
 
     with open('static/data/dataset.json', 'w') as f:
         json.dump(data, f, ensure_ascii = False, indent=2)
@@ -45,10 +44,8 @@ all_indices, alpaca_arabic = load_data()
 def submit():
     if request.method == 'POST':
         element = {k:request.form[k] for k in request.form}
-        idx = element['idx'].split(':')[1].strip()
-        element['idx'] = idx
-        save_json({idx: element})
-        open('static/data/finished_indices.txt', 'a').write(' '+str(idx))
+        save_json(element)
+        open('static/data/finished_indices.txt', 'a').write(' '+element['index'])
     return redirect(url_for('index'))
    
 @app.route('/api/data')
@@ -60,10 +57,37 @@ def send_data():
         finished_indices = set()
 
     rem_indices = all_indices - finished_indices
-    idx = random.choice(list(rem_indices))
-    element = alpaca_arabic['train'][idx]
+    index = random.choice(list(rem_indices))
+    element = alpaca_arabic['train'][index]
     element['num_rem'] = len(rem_indices)
     return jsonify(element)
+
+@app.route('/api/saved')
+def send_saved_data():
+    element = {
+            "instruction":'',
+            "input" :'',
+            "output" :'',
+            "instruction_en":'',
+            "input_en" :'',
+            "output_en" :'',
+            "num_rem":0,
+            "index":-1
+        }
+    print(element)
+    if os.path.exists('static/data/dataset.json'):
+        with open('static/data/dataset.json') as f:
+            data = json.load(f)
+        saved_indices = list(range(len(data)))
+        index = random.choice(saved_indices)
+        element = data[index]
+        element['num_rem'] = len(saved_indices)
+    return jsonify(element)
+
+@app.route('/explore')
+def explore():
+    return render_template('explore.html')
+
 
 @app.route('/')
 def index():
