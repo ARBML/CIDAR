@@ -44,7 +44,7 @@ function submitForm() {
 
 is_explore_page = window.location.pathname == '/explore'
 if (is_explore_page) {
-    $('#submit').hide();
+    $('#btnSubmit').hide();
 }
 changed = false
 getNext()
