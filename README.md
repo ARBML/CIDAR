@@ -7,5 +7,5 @@
 ## Run the app
 
 ```
-export FLASK_APP=app && flask run
+flask --app app run 
 ```

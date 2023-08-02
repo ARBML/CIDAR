@@ -5,7 +5,7 @@
         initially translted 52k samples using ChatGPT but around 10K of the samples have some issues.
         Here is a summary of some exmaples:
     </p>
-    <div class="col-sm-12 bg-primary">
+    <div class="col-sm-12 bg-info">
         <ol class="list-group list-group-numbered">
             <li class="list-group-item d-flex justify-content-between align-items-start">
                 <div class="ms-2 me-auto">
@@ -30,9 +30,18 @@
                 </div>
             </li>
     </div>
-    <span class="badge rounded-pill bg-light text-dark" id="index"></span>
+    <div class="row">
+        <div class="col-sm-6">
+            <span class="badge text-dark bg-light" id="index"></span>
+
+        </div>
+
+        <div class="col-sm-6">
+            <span class="badge text-dark bg-light text-right" id="num_rem"></span>
+        </div>
+    </div>
     <form action="/api/submit" method="post" id="theForm">
-        <div class="row bg-primary text-white p-3 mb-2 ">
+        <div class="row bg-info text-dark p-3 mb-2 ">
             <div class="col-sm-6">
                 <h3>English</h3>
                 <label for="instruction_en">Instruction</label>
@@ -57,38 +66,32 @@
         </div>
         <div class="row">
             <div class="col-sm-12" align="center">
-                <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-outline-primary" onclick="getNext()">skip</button>
-                    <button type="button" class="btn btn-primary" onclick="checkChanges()" id="btnSubmit">
-                        Submit
-                    </button>
+                <button type="button" class="btn btn-outline-secondary" onclick="getNext()">skip</button>
+                <button type="button" class="btn btn-info" onclick="checkChanges()" id="btnSubmit">
+                    Submit
+                </button>
 
-                    <!-- Modal -->
-                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title text-dark" id="exampleModalLabel">Empty Changes</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body text-dark">
-                                    You haven't added any changes, are you sure you want to submit?
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary" onclick="submitForm()">Submit</button>
-                                </div>
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title text-dark" id="exampleModalLabel">Empty Changes</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body text-dark">
+                                You haven't added any changes, are you sure you want to submit?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-info" onclick="submitForm()">Submit</button>
                             </div>
                         </div>
                     </div>
                 </div>
                 <input type="hidden" class="form-control" id="index_input" name="index" readonly>
-
-                <span class="badge rounded-pill bg-light text-dark float-right" id="num_rem"></span>
-
             </div>
     </form>
 </div>

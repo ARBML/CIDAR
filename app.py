@@ -1,11 +1,37 @@
 from flask import Flask, render_template, redirect, url_for
 from flask import request, jsonify
 from datasets import load_dataset
+from flask_apscheduler import APScheduler
 import random 
 import json 
-import os 
+import os
+import subprocess
+
+# set configuration values
+class Config:
+    SCHEDULER_API_ENABLED = True
 
 app = Flask(__name__)
+app.config.from_object(Config())
+
+scheduler = APScheduler()
+
+class Config:
+    SCHEDULER_API_ENABLED = True
+
+scheduler.init_app(app)
+
+def get_finished_indices():
+    if os.path.exists('static/data/dataset.json'):
+        with open('static/data/dataset.json') as f:
+            data = json.load(f)
+
+        finished_indices = []
+        for element in data:
+            finished_indices.append(element['index'])
+        return set(finished_indices)
+    else:
+        return set()
 
 def load_data():
     alpaca_arabic = load_dataset('arbml/alpaca_arabic')
@@ -28,11 +54,7 @@ def save_json(entry):
     if os.path.exists('static/data/dataset.json'):
         with open('static/data/dataset.json') as f:
             data = json.load(f)
-
         data.append(entry)
-    else:
-        os.makedirs('static/data', exist_ok=True)
-        data = [entry]
 
     with open('static/data/dataset.json', 'w') as f:
         json.dump(data, f, ensure_ascii = False, indent=2)
@@ -45,17 +67,12 @@ def submit():
     if request.method == 'POST':
         element = {k:request.form[k] for k in request.form}
         save_json(element)
-        open('static/data/finished_indices.txt', 'a').write(' '+element['index'])
     return redirect(url_for('index'))
    
 @app.route('/api/data')
 def send_data():
-    if os.path.exists('static/data/finished_indices.txt'):
-        finished_indices = open('static/data/finished_indices.txt', 'r').read().strip()
-        finished_indices = set([int(ind) for ind in finished_indices.split(' ') if len(ind) > 0])
-    else:
-        finished_indices = set()
-
+    
+    finished_indices = get_finished_indices()
     rem_indices = all_indices - finished_indices
     index = random.choice(list(rem_indices))
     element = alpaca_arabic['train'][index]
@@ -84,6 +101,27 @@ def send_saved_data():
         element['num_rem'] = len(saved_indices)
     return jsonify(element)
 
+@scheduler.task('interval', id='do_push_hf', minutes=60)
+def pushHF():
+    TOKEN = os.environ.get('HF_TOKEN')
+    print('pushing to hf', TOKEN)
+    subprocess.run(["huggingface-cli", "login", "--token", TOKEN])
+    dataset = load_dataset("json", data_files="static/data/dataset.json")
+    dataset.push_to_hub('arbml/alpaca_arabic_v2')
+
+def init_dataset():
+    os.makedirs('static/data', exist_ok=True)
+    try:
+        print('loading previous dataset')
+        dataset = load_dataset('arbml/alpaca_arabic_v2')
+        print(dataset)
+        data = [elm for elm in dataset['train']]
+    except:
+        data = []
+
+    with open('static/data/dataset.json', 'w') as f:
+        json.dump(data, f, ensure_ascii = False, indent=2)
+    
 @app.route('/explore')
 def explore():
     return render_template('explore.html')
@@ -93,5 +131,8 @@ def explore():
 def index():
     return render_template('index.html')
 
+init_dataset()
+scheduler.start()
+
 if __name__ == '__main__':
-  app.run(port=5000)
+    app.run(port=5000)
