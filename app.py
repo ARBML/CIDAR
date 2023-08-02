@@ -91,31 +91,35 @@ def send_saved_data():
             "num_rem":0,
             "index":-1
         }
-    print(element)
-    if os.path.exists('static/data/dataset.json'):
-        with open('static/data/dataset.json') as f:
-            data = json.load(f)
+    with open('static/data/dataset.json') as f:
+        data = json.load(f)
+    if len(data):
         saved_indices = list(range(len(data)))
         index = random.choice(saved_indices)
         element = data[index]
         element['num_rem'] = len(saved_indices)
     return jsonify(element)
 
-@scheduler.task('interval', id='do_push_hf', minutes=60)
-def pushHF():
+@scheduler.task('interval', id='do_push_hf', hours=1)
+def push_hub():
     TOKEN = os.environ.get('HF_TOKEN')
     print('pushing to hf', TOKEN)
     subprocess.run(["huggingface-cli", "login", "--token", TOKEN])
-    dataset = load_dataset("json", data_files="static/data/dataset.json")
-    dataset.push_to_hub('arbml/alpaca_arabic_v2')
+    with open('static/data/dataset.json') as f:
+        data = json.load(f)
+    
+    if len(data):
+        dataset = load_dataset("json", data_files="static/data/dataset.json",  download_mode = "force_redownload")
+        dataset.push_to_hub('arbml/arabic_alpaca_v3')
 
 def init_dataset():
     os.makedirs('static/data', exist_ok=True)
     try:
         print('loading previous dataset')
-        dataset = load_dataset('arbml/alpaca_arabic_v2')
+        dataset = load_dataset('arbml/arabic_alpaca_v3', download_mode = "force_redownload", verification_mode='no_checks')
         print(dataset)
         data = [elm for elm in dataset['train']]
+        print('data', data)
     except:
         data = []
 
