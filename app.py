@@ -100,7 +100,7 @@ def send_saved_data():
         element['num_rem'] = len(saved_indices)
     return jsonify(element)
 
-@scheduler.task('interval', id='do_push_hf', hours=1)
+@scheduler.task('interval', id='do_push_hf', minutes=5)
 def push_hub():
     TOKEN = os.environ.get('HF_TOKEN')
     print('pushing to hf', TOKEN)
@@ -110,13 +110,13 @@ def push_hub():
     
     if len(data):
         dataset = load_dataset("json", data_files="static/data/dataset.json",  download_mode = "force_redownload")
-        dataset.push_to_hub('arbml/arabic_alpaca_v3')
+        dataset.push_to_hub('arbml/alpaca_arabic_v3')
 
 def init_dataset():
     os.makedirs('static/data', exist_ok=True)
     try:
         print('loading previous dataset')
-        dataset = load_dataset('arbml/arabic_alpaca_v3', download_mode = "force_redownload", verification_mode='no_checks')
+        dataset = load_dataset('arbml/alpaca_arabic_v3', download_mode = "force_redownload", verification_mode='no_checks')
         print(dataset)
         data = [elm for elm in dataset['train']]
         print('data', data)
