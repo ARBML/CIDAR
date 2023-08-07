@@ -28,7 +28,7 @@ def get_finished_indices():
 
         finished_indices = []
         for element in data:
-            finished_indices.append(element['index'])
+            finished_indices.append(int(element['index']))
         return set(finished_indices)
     else:
         return set()
@@ -103,7 +103,6 @@ def send_saved_data():
 @scheduler.task('interval', id='do_push_hf', hours=1)
 def push_hub():
     TOKEN = os.environ.get('HF_TOKEN')
-    print('pushing to hf', TOKEN)
     subprocess.run(["huggingface-cli", "login", "--token", TOKEN])
     with open('static/data/dataset.json') as f:
         data = json.load(f)
@@ -119,7 +118,6 @@ def init_dataset():
         dataset = load_dataset('arbml/alpaca_arabic_v3', download_mode = "force_redownload", verification_mode='no_checks')
         print(dataset)
         data = [elm for elm in dataset['train']]
-        print('data', data)
     except:
         data = []
 
