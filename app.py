@@ -35,13 +35,13 @@ def get_finished_indices():
 
 def load_data():
     alpaca_arabic = load_dataset('arbml/alpaca_arabic')
-    new_column = list(range(len(alpaca_arabic['train'])))
-    alpaca_arabic['train'] = alpaca_arabic['train'].add_column("index", new_column)
+    # new_column = list(range(len(alpaca_arabic['train'])))
+    # alpaca_arabic['train'] = alpaca_arabic['train'].add_column("index", new_column)
 
     def filter_english(example):
         alphabets = 'abcdefghijklmnopqrstuvwxyz'
         for alph in alphabets:
-            if alph in example['instruction']+example['input']+example['output']:
+            if alph in example['instruction']+example['input']:
                 return True
         return False
 
