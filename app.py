@@ -34,15 +34,19 @@ def get_finished_indices():
         return set()
 
 def load_data():
-    alpaca_arabic = load_dataset('arbml/alpaca_arabic')
+    alpaca_arabic = load_dataset('arbml/alpagasus_cleaned_ar')
     # new_column = list(range(len(alpaca_arabic['train'])))
     # alpaca_arabic['train'] = alpaca_arabic['train'].add_column("index", new_column)
 
     def filter_english(example):
         alphabets = 'abcdefghijklmnopqrstuvwxyz'
         for alph in alphabets:
-            if alph in example['instruction']+example['input']:
-                return True
+            if 'input' in example:
+                if alph in example['instruction']+example['input']:
+                    return True
+            else:
+                if alph in example['instruction']:
+                    return True
         return False
 
     english_data = alpaca_arabic.filter(filter_english)
@@ -51,10 +55,12 @@ def load_data():
     return all_indices, alpaca_arabic
 
 def save_json(entry):
+    data = []
     if os.path.exists('static/data/dataset.json'):
         with open('static/data/dataset.json') as f:
             data = json.load(f)
-        data.append(entry)
+    
+    data.append(entry)
 
     with open('static/data/dataset.json', 'w') as f:
         json.dump(data, f, ensure_ascii = False, indent=2)
@@ -109,14 +115,13 @@ def push_hub():
     
     if len(data):
         dataset = load_dataset("json", data_files="static/data/dataset.json",  download_mode = "force_redownload")
-        dataset.push_to_hub('arbml/alpaca_arabic_v3')
+        dataset.push_to_hub('arbml/alpagasus_cleaned_ar_reviewed')
 
 def init_dataset():
     os.makedirs('static/data', exist_ok=True)
     try:
         print('loading previous dataset')
-        dataset = load_dataset('arbml/alpaca_arabic_v3', download_mode = "force_redownload", verification_mode='no_checks')
-        print(dataset)
+        dataset = load_dataset('arbml/alpagasus_cleaned_ar_reviewed', download_mode = "force_redownload", verification_mode='no_checks')
         data = [elm for elm in dataset['train']]
     except:
         data = []

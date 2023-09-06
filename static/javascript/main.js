@@ -13,10 +13,12 @@ function getNextElment() {
 function getNext() {
     element = getNextElment()
     document.getElementById('instruction').value = element['instruction'];
-    document.getElementById('input').value = element['input'];
+    if ('input' in element)
+        document.getElementById('input').value = element['input'];
     document.getElementById('output').value = element['output'];
     document.getElementById('instruction_en').value = element['instruction_en'];
-    document.getElementById('input_en').value = element['input_en'];
+    if ('input_en' in element)
+        document.getElementById('input_en').value = element['input_en'];
     document.getElementById('output_en').value = element['output_en'];
     if (is_explore_page)
         document.getElementById('num_rem').innerHTML = 'Total: ' + element['num_rem'];
