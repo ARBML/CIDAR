@@ -38,7 +38,7 @@ def load_data():
     # new_column = list(range(len(alpaca_arabic['train'])))
     # alpaca_arabic['train'] = alpaca_arabic['train'].add_column("index", new_column)
 
-    def filter_english(example):
+    def filter_dataset(example):
         alphabets = 'abcdefghijklmnopqrstuvwxyz'
         for alph in alphabets:
             if 'input' in example:
@@ -47,10 +47,14 @@ def load_data():
             else:
                 if alph in example['instruction']:
                     return True
+            if example['instruction'].strip() == "" or example['output'].strip() == "":
+                return True
         return False
 
-    english_data = alpaca_arabic.filter(filter_english)
-    all_indices = set([sample['index'] for sample in english_data['train']])
+    english_data = alpaca_arabic.filter(filter_dataset)
+    # include random indices 
+    extra_indices = [random.randint(0, len(alpaca_arabic['train'])-1) for _ in range(1000)]
+    all_indices = set([sample['index'] for sample in english_data['train']] + extra_indices)
 
     return all_indices, alpaca_arabic
 
