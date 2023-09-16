@@ -7,6 +7,20 @@ import json
 import os
 import subprocess
 
+prob_mt_ar = {
+    'وصف':'صف',
+    'تحديد':'حدد',
+    'خلاصة':'لخص',
+    'شرح':'اشرح',
+    'اسم': 'سم'
+}
+prob_mt_en = {
+    'وصف': 'describe',
+    'تحديد': 'determine',
+    'خلاصة':'summarize',
+    'شرح':'explain',
+    'اسم': 'name'
+}
 # set configuration values
 class Config:
     SCHEDULER_API_ENABLED = True
@@ -40,20 +54,25 @@ def load_data():
 
     def filter_dataset(example):
         alphabets = 'abcdefghijklmnopqrstuvwxyz'
-        for alph in alphabets:
-            if 'input' in example:
-                if alph in example['instruction']+example['input']:
-                    return True
-            else:
-                if alph in example['instruction']:
-                    return True
-            if example['instruction'].strip() == "" or example['output'].strip() == "":
+        inp = (example['instruction']+example['input']).strip() if 'input' in example else example['instruction'].strip()
+        out = example['output']
+        
+        inp_en = example['instruction_en']+example['input_en'] if 'input_en' in example else example['instruction_en']
+        # for alph in alphabets:
+        #     if alph in inp+out:
+        #         return True
+        if inp.strip() == "" or out.strip() == "":
+            return True
+        
+        for key in prob_mt_ar:
+            if key in inp.split(' ')[0] and prob_mt_en[key] in inp_en.lower():
                 return True
         return False
 
     english_data = alpaca_arabic.filter(filter_dataset)
     # include random indices 
-    extra_indices = [random.randint(0, len(alpaca_arabic['train'])-1) for _ in range(1000)]
+    extra_indices = []
+    # extra_indices = [random.randint(0, len(alpaca_arabic['train'])-1) for _ in range(1000)]
     all_indices = set([sample['index'] for sample in english_data['train']] + extra_indices)
 
     return all_indices, alpaca_arabic
@@ -86,6 +105,8 @@ def send_data():
     rem_indices = all_indices - finished_indices
     index = random.choice(list(rem_indices))
     element = alpaca_arabic['train'][index]
+    for key in prob_mt_ar:
+        element['instruction'] = element['instruction'].replace(key, prob_mt_ar[key], 1)
     element['num_rem'] = len(rem_indices)
     return jsonify(element)
 

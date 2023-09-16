@@ -48,5 +48,5 @@ is_explore_page = window.location.pathname == '/explore'
 if (is_explore_page) {
     $('#btnSubmit').hide();
 }
-changed = false
+changed = true
 getNext()
