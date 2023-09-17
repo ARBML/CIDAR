@@ -73,6 +73,7 @@ def load_data():
     # include random indices 
     extra_indices = []
     # extra_indices = [random.randint(0, len(alpaca_arabic['train'])-1) for _ in range(1000)]
+    extra_indices = [i for i in range(len(alpaca_arabic['train']))]
     all_indices = set([sample['index'] for sample in english_data['train']] + extra_indices)
 
     return all_indices, alpaca_arabic
