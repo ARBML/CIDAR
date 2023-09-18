@@ -58,22 +58,34 @@ def load_data():
         out = example['output']
         
         inp_en = example['instruction_en']+example['input_en'] if 'input_en' in example else example['instruction_en']
+        # English insturctions
         # for alph in alphabets:
         #     if alph in inp+out:
         #         return True
-        if inp.strip() == "" or out.strip() == "":
+        
+        # empty insturctions
+        # if inp.strip() == "" or out.strip() == "":
+        #     return True
+        
+        # insturctions containing foreigh stuff
+        if 'الولايات المتحدة' in inp:
             return True
         
-        for key in prob_mt_ar:
-            if key in inp.split(' ')[0] and prob_mt_en[key] in inp_en.lower():
-                return True
-        return False
+        #instructions including certain words
+        # for key in prob_mt_ar:
+        #     if key in inp.split(' ')[0] and prob_mt_en[key] in inp_en.lower():
+        #         return True
+        # return False
 
     english_data = alpaca_arabic.filter(filter_dataset)
     # include random indices 
     extra_indices = []
+    # random insturctions
     # extra_indices = [random.randint(0, len(alpaca_arabic['train'])-1) for _ in range(1000)]
-    extra_indices = [i for i in range(len(alpaca_arabic['train']))]
+
+    # all instructions 
+    # extra_indices = [i for i in range(len(alpaca_arabic['train']))]
+
     all_indices = set([sample['index'] for sample in english_data['train']] + extra_indices)
 
     return all_indices, alpaca_arabic
@@ -106,8 +118,8 @@ def send_data():
     rem_indices = all_indices - finished_indices
     index = random.choice(list(rem_indices))
     element = alpaca_arabic['train'][index]
-    for key in prob_mt_ar:
-        element['instruction'] = element['instruction'].replace(key, prob_mt_ar[key], 1)
+    # for key in prob_mt_ar:
+    #     element['instruction'] = element['instruction'].replace(key, prob_mt_ar[key], 1)
     element['num_rem'] = len(rem_indices)
     return jsonify(element)
 
