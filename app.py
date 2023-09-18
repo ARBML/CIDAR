@@ -21,6 +21,21 @@ prob_mt_en = {
     'شرح':'explain',
     'اسم': 'name'
 }
+
+usa_related_words = [
+    'الولايات المتحدة',
+    'أمريكا',
+    'نيويورك',
+    'واشنكن',
+    'لوس أنجلوس',
+    'سان فرانسيسكو'
+]
+
+poem_related_words =[
+    'قصيدة',
+    'هايكو',
+    'قصيده'
+]
 # set configuration values
 class Config:
     SCHEDULER_API_ENABLED = True
@@ -68,8 +83,9 @@ def load_data():
         #     return True
         
         # insturctions containing foreigh stuff
-        if 'الولايات المتحدة' in inp:
-            return True
+        for word in usa_related_words + poem_related_words:
+            if word in inp:
+                return True
         
         #instructions including certain words
         # for key in prob_mt_ar:
