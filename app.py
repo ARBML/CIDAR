@@ -100,7 +100,7 @@ def load_data():
     # extra_indices = [random.randint(0, len(alpaca_arabic['train'])-1) for _ in range(1000)]
 
     # all instructions 
-    # extra_indices = [i for i in range(len(alpaca_arabic['train']))]
+    extra_indices = [i for i in range(len(alpaca_arabic['train']))]
 
     all_indices = set([sample['index'] for sample in english_data['train']] + extra_indices)
 
