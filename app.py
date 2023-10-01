@@ -125,11 +125,10 @@ def submit():
     if request.method == 'POST':
         element = {k:request.form[k] for k in request.form}
         save_json(element)
-    return redirect(url_for('index'))
+    return render_template('index.html')
    
 @app.route('/api/data')
 def send_data():
-    
     finished_indices = get_finished_indices()
     rem_indices = all_indices - finished_indices
     index = random.choice(list(rem_indices))
@@ -138,6 +137,17 @@ def send_data():
     #     element['instruction'] = element['instruction'].replace(key, prob_mt_ar[key], 1)
     element['num_rem'] = len(rem_indices)
     return jsonify(element)
+
+@app.route('/api/getCon', methods = ['POST', 'GET'])
+def get_cont():
+    print(request.form)
+    name = request.form['Reviewed by']
+    with open('static/data/dataset.json') as f:
+        data = json.load(f)
+    return jsonify({
+        "num_cont":len([elm for elm in data if elm['Reviewed by'] == name])
+    })
+
 
 @app.route('/api/saved')
 def send_saved_data():
@@ -169,13 +179,13 @@ def push_hub():
     
     if len(data):
         dataset = load_dataset("json", data_files="static/data/dataset.json",  download_mode = "force_redownload")
-        dataset.push_to_hub('arbml/alpagasus_cleaned_ar_reviewed')
+        dataset.push_to_hub('arbml/alpagasus_cleaned_ar_reviewed_v2')
 
 def init_dataset():
     os.makedirs('static/data', exist_ok=True)
     try:
         print('loading previous dataset')
-        dataset = load_dataset('arbml/alpagasus_cleaned_ar_reviewed', download_mode = "force_redownload", verification_mode='no_checks')
+        dataset = load_dataset('arbml/alpagasus_cleaned_ar_reviewed_v2', download_mode = "force_redownload", verification_mode='no_checks')
         data = [elm for elm in dataset['train']]
     except:
         data = []

@@ -10,6 +10,18 @@ function getNextElment() {
     return JSON.parse(xmlHttp.responseText);
 }
 
+function getContributionsBy(name) {
+    $.ajax({
+        type: 'POST',
+        url: "/api/getCon",
+        data: {'Reviewed by': name}, //How can I preview this?
+        dataType: 'json',
+        success: function(d){
+            document.getElementById('num_cont').innerHTML = 'Number of Contributions: '+ d.num_cont;
+        }
+      });
+}
+
 function getNext() {
     element = getNextElment()
     document.getElementById('instruction').value = element['instruction'];
@@ -26,10 +38,16 @@ function getNext() {
         document.getElementById('num_rem').innerHTML = 'Remaining: ' + element['num_rem'];
     document.getElementById('index_input').value = element['index'];
     document.getElementById('index').innerHTML = 'index: ' + element['index'];
+    document.getElementById('Reviewed by').value = curr_reviewer
+    console.log("Current Reviewer", curr_reviewer)
 }
 
 $(".edittable").on('change', function () {
     changed = true
+});
+
+$(".changed").on('change', function () {
+    curr_reviewer = this.value
 });
 
 function checkChanges() {
@@ -42,11 +60,33 @@ function checkChanges() {
 
 function submitForm() {
     document.getElementById('theForm').submit();
+    num_cont += 1
+    document.getElementById('num_rem').innerHTML = 'Number of Contributions: '+ num_cont;
+
 }
 
 is_explore_page = window.location.pathname == '/explore'
 if (is_explore_page) {
     $('#btnSubmit').hide();
 }
+
+$(document).on('submit','#theForm',function(e)
+    {
+      e.preventDefault();
+      $.ajax({
+        type:'POST',
+        url:'/api/submit',
+        data:$('form').serialize(),
+        success:function()
+        {
+            getNext();
+            getContributionsBy(curr_reviewer)
+            
+        }
+      })
+    });
+
+num_cont = 0
+curr_reviewer = ""
 changed = true
 getNext()

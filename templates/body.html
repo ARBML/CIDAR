@@ -36,11 +36,15 @@
 
         </div>
 
-        <div class="col-sm-6">
+        <div class="col-sm-3">
             <span class="badge text-dark bg-light text-right" id="num_rem"></span>
         </div>
+
+        <div class="col-sm-3">
+            <span class="badge text-dark bg-light text-right" id="num_cont">Total Contributions: </span>
+        </div>
     </div>
-    <form action="/api/submit" method="post" id="theForm">
+    <form method="POST" id="theForm">
         <div class="row bg-info text-dark p-3 mb-2 ">
             <div class="col-sm-6">
                 <h3>English</h3>
@@ -51,6 +55,8 @@
                 <label>Output</label>
                 <textarea type="text" class="form-control edittable" id="output_en" name="output_en"
                     rows="10"></textarea>
+                <input type="text" class="form-control input-sm changed" id="Reviewed by" name="Reviewed by" placeholder="Enter your name here" required>
+
             </div>
             <div class="col-sm-6">
                 <h3>Arabic</h3>
@@ -61,15 +67,17 @@
                 <label for="output">Output</label>
                 <textarea type="text" dir="rtl" class="form-control edittable" id="output" name="output"
                     rows="10"> </textarea>
+
             </div>
 
         </div>
         <div class="row">
             <div class="col-sm-12" align="center">
                 <button type="button" class="btn btn-outline-secondary" onclick="getNext()">skip</button>
-                <button type="button" class="btn btn-info" onclick="checkChanges()" id="btnSubmit">
+                <button type="submit" class="btn btn-info" id="btnSubmit">
                     Submit
                 </button>
+
 
                 <!-- Modal -->
                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
