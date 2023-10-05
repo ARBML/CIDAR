@@ -2,6 +2,7 @@ from flask import Flask, render_template, redirect, url_for
 from flask import request, jsonify
 from datasets import load_dataset
 from flask_apscheduler import APScheduler
+from collections import Counter
 import random 
 import json 
 import os
@@ -137,6 +138,12 @@ def send_data():
     #     element['instruction'] = element['instruction'].replace(key, prob_mt_ar[key], 1)
     element['num_rem'] = len(rem_indices)
     return jsonify(element)
+
+@app.route('/api/getConNames')
+def get_cont_names():
+    with open('static/data/dataset.json') as f:
+        data = json.load(f)
+    return jsonify(Counter([elm['Reviewed by'].strip().split(' ')[0].strip() for elm in data]))
 
 @app.route('/api/getCon', methods = ['POST', 'GET'])
 def get_cont():

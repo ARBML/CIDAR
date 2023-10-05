@@ -22,6 +22,65 @@ function getContributionsBy(name) {
       });
 }
 
+function getContributionsNames() {
+    var url = "/api/getConNames";
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open("GET", url, false);
+    xmlHttp.send(null);
+    return JSON.parse(xmlHttp.responseText);
+}
+
+function setUpBarGraph(){
+    // Initialize the echarts instance based on the prepared dom
+    var myChart = echarts.init(document.getElementById('main'));
+    var contributers = getContributionsNames()
+    // Specify the configuration items and data for the chart
+    var source = []
+    for (var key in contributers){
+        source.push([key, contributers[key]])
+      }
+    console.log(source)
+    var option = {
+        dataset: [
+            {
+             dimensions: ['name', 'contributers'],
+              source: source
+            },
+            {
+                transform: [
+                    {
+                      type: 'sort',
+                      config: { dimension: 'contributers', order: 'desc' }
+                    }
+                  ]
+                }
+          ],
+      title: {
+        text: ''
+      },
+      tooltip: {},
+      legend: {
+        data: ['Contributers']
+      },
+      xAxis: {
+        type: 'category'
+      },
+      yAxis: {},
+      series: [
+        {
+          name: 'Contributers',
+          type: 'bar',
+          itemStyle: { 
+            // HERE IS THE IMPORTANT PART
+            color: "rgba(13,202,240,1)"
+          },
+          datasetIndex: 1
+        }
+      ]
+    };
+
+    myChart.setOption(option);
+}
 function getNext() {
     element = getNextElment()
     document.getElementById('instruction').value = element['instruction'];
@@ -40,6 +99,10 @@ function getNext() {
     document.getElementById('index').innerHTML = 'index: ' + element['index'];
     document.getElementById('Reviewed by').value = curr_reviewer
     console.log("Current Reviewer", curr_reviewer)
+
+    if (is_explore_page){
+        setUpBarGraph();
+    }
 }
 
 $(".edittable").on('change', function () {
