@@ -1,9 +1,9 @@
 <div class="row p-3 mb-2 bg-light">
     <p>
         The Alpaca translation tool aims to create an Arabic version of the <a
-            href="https://github.com/tatsu-lab/stanford_alpaca">Alpaca</a> dataset. We
-        initially translted 52k samples using ChatGPT but around 10K of the samples have some issues.
-        Here is a summary of some exmaples:
+            href="https://github.com/tatsu-lab/stanford_alpaca">Alpaca</a> dataset. We used Alpagasus dataset to select
+        around 9,000 samples to be
+        reviewed. We also add around 1,000 samples that contain linguisitc instructions.
     </p>
     <div class="col-sm-12 bg-info">
         <ol class="list-group list-group-numbered">
@@ -24,10 +24,10 @@
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-start">
                 <div class="ms-2 me-auto">
-                    <div class="fw-bold">Fix Origianl Alpaca</div>
-                    Some examples in the original English Alpaca might not be correct. For example some
-                    insturctions might have some missing inputs.
-                </div>
+                    <div class="fw-bold">Adapt Cultural Content</div>
+                    Some examples in the original English Alpaca might contain some examples that represent the
+                    western cultures. We want to replace them with insturctions that represent the Arabic region and its
+                    culture.
             </li>
     </div>
     <div class="row">
@@ -55,7 +55,8 @@
                 <label>Output</label>
                 <textarea type="text" class="form-control edittable" id="output_en" name="output_en"
                     rows="10"></textarea>
-                <input type="text" class="form-control input-sm changed" id="Reviewed by" name="Reviewed by" placeholder="Enter your name here" required>
+                <input type="text" class="form-control input-sm changed" id="Reviewed by" name="Reviewed by"
+                    placeholder="Enter your name here" required>
 
             </div>
             <div class="col-sm-6">
