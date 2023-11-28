@@ -186,13 +186,13 @@ def push_hub():
     
     if len(data):
         dataset = load_dataset("json", data_files="static/data/dataset.json",  download_mode = "force_redownload")
-        dataset.push_to_hub('arbml/alpagasus_cleaned_ar_reviewed_v3')
+        dataset.push_to_hub('arbml/alpagasus_cleaned_ar_reviewed_v4')
 
 def init_dataset():
     os.makedirs('static/data', exist_ok=True)
     try:
         print('loading previous dataset')
-        dataset = load_dataset('arbml/alpagasus_cleaned_ar_reviewed_v3', download_mode = "force_redownload", verification_mode='no_checks')
+        dataset = load_dataset('arbml/alpagasus_cleaned_ar_reviewed_v4', download_mode = "force_redownload", verification_mode='no_checks')
         data = [elm for elm in dataset['train']]
     except:
         data = []
