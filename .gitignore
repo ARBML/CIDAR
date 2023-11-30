@@ -160,3 +160,4 @@ cython_debug/
 #.idea/
 static/data/dataset.json
 static/data/finished_indices.txt
+dataset/*
