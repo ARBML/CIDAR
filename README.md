@@ -1,12 +1,13 @@
-# 🌴CIDAR
+# 🌴CIDAR: *Culturally-Relevant Instruction Dataset For Arabic*
 <p align="center">
 <img src="https://cdn-uploads.huggingface.co/production/uploads/655e10b1c38270696b290f20/lKec96otC8VdM09SnPKL8.png" width = "150px"/>
 </p>
 
-CIDAR: Culturally-Relevant Instruction Dataset For Arabic. CIDAR contains 10,000 instructions and their outputs. The dataset was created by selecting around 9.2k samples from [Alpagasus](https://huggingface.co/datasets/mlabonne/alpagasus) dataset then translating it using ChatGPT. In addition, we append that with around 800 instructions from the webiste [Ask the teacher](https://learning.aljazeera.net/ar/asktheteacher). All the 10,000 samples are reviewed by around 10 reviewers. 
+CIDAR contains **10,000** `instructions` and their `output`. The dataset was created by selecting around **9.2k** samples from [Alpagasus](https://huggingface.co/datasets/mlabonne/alpagasus) dataset then translating it to `Arabic` using ChatGPT. In addition, we append that with around **800** Arabic grammar instructions from the webiste [Ask the teacher](https://learning.aljazeera.net/ar/asktheteacher). All the 10,000 samples were reviewed by around 12 reviewers. 
+
 
 <p align="center">
-<img src="./imgs/CIDAR Data Collection System Diagram.png" width = "1200px"/>
+<img src="./imgs/CIDAR Workflow.png" width = "1200px"/>
 </p>
 
 ## 📝 CIDAR Annotation
@@ -21,13 +22,13 @@ Our data annotation paltform was built on top of flask library. You can follow t
 
 The annotation app contains two sections: `English` and `Arabic`. Reviewers can make changes on `Instruction`, `Input`, and `Output` to fix mistakes and align data with Arabic culture.
 
-`instruction(str)`: required instruction. Each of the 10K instructions is reviewd by a contributer.
+`instruction(str)`: Required instruction.
 
-`input(str)`: (Optional) input for the instruction. For example, when the instruction is find the mistake in the next sentence, the input is the sentence.
+`input(str)`: [Optional] input for the instruction. For example, when the instruction is find the mistake in the next sentence, the input is the sentence.
 
-`output(str)`: response for the instruction given.
+`output(str)`: Response for the given instruction.
 
- Also, reviewers are able to track their contribution record and how much data are remaining.
+ Also, reviewers are able to track their contribution record and the number of instructions remaining.
 <p align="center">
 <img src="imgs/annot-ss.png" width="700"/>
 </p>
@@ -37,17 +38,17 @@ You can download the dataset from [HuggingFace - CIDAR](https://huggingface.co/d
 
 ```python
 from datasets import load_dataset
-cidar = load_dataset('arbml/CIDAR')
+cidar = load_dataset('arbml/CIDAR-V2')
 ```
 
 ## 📄 Sample From The Dataset:
-This sample shows an Arabic-specific intruction which related to `البلاغة` and `الإعراب`. The sentence is orignally in Arabic - not translated from any other lanaguage - 
+This sample shows an Arabic-specific intruction which related to `البلاغة(rhetoric)` and `الإعراب(grammatical status)`. The sentence is orignally in Arabic.
 
- `index`: 10030
+ **index**: 10030
 
- `instruction`: لو سمحت اين صيغة المبالغة في " الجاحظ اديب سيارة اراؤه" و ما اعراب الجملة؟
+ **instruction**: لو سمحت اين صيغة المبالغة في " الجاحظ اديب سيارة اراؤه" و ما اعراب الجملة؟
 
- `output`:
+ **output**:
  
            'صيغة المبالغة في هذه الجملة هي "سيّارة"، فاسم الفاعل من "السير" هو '
            '"سائر/ سائرة" وإذا أردت الدلالة على المبالغة في سير الآراء (أي '
@@ -63,14 +64,12 @@ This sample shows an Arabic-specific intruction which related to `البلاغة
 
 ...
 
-## ⛔️ Limitations and Future Work
-
-...
-
 ## 🧩 Contributers
+There were at least 12 contributors to the annotation of CIDAR. You can check the list [here](https://alpacaarabic-production.up.railway.app/explore).
 
-...
+## ⛔️ Limitations and Future Work
+CIDAR is intended for **research** purposes only. The authors disclaim any responsibility for misuse and condemn any use contrary to **Arabic culture** or **Islamic values**. Even though subjected to human verification, there is no guarantee that responses are entirely aligned with Arabic culture and Islamic values. Users of the dataset are urged to exercise caution, employ critical thinking, and seek guidance from representative figures when necessary.
 
 ## 🔑 License
-
-...
+CIDAR is intended and licensed for **research** use only. The dataset and weight diffs are licensed uder **CC BY NC 4.0** (LIMITED TO NON-COMMERCIAL USE). Models trained using the dataset should not be used outside of research purposes.
+[Creative Commons NonCommercial (CC BY-NC 4.0)](https://creativecommons.org/licenses/by-nc/4.0/deed.en).
