@@ -63,10 +63,6 @@ This sample shows an Arabic-specific intruction which related to `البلاغة
            'وفي الحالتين فجملة "سيارة آراؤه" جملة اسمية في محل رفع نعت '
            'لـ"أديب".'
 
-## 📉 Statistics
-
-...
-
 ## 🧩 Contributers
 There were at least 12 contributors to the annotation of CIDAR. You can check the list [here](https://alpacaarabic-production.up.railway.app/explore).
 
