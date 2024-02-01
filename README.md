@@ -6,7 +6,7 @@
 
 </p>
 
-CIDAR contains **10,000** `instructions` and their `output`. The dataset was created by selecting around **9.2k** samples from [Alpagasus](https://huggingface.co/datasets/mlabonne/alpagasus) dataset then translating it to `Arabic` using ChatGPT. In addition, we append that with around **800** Arabic grammar instructions from the webiste [Ask the teacher](https://learning.aljazeera.net/ar/asktheteacher). All the 10,000 samples were reviewed by around 12 reviewers. 
+CIDAR contains **10,000** `instructions` and their `output`. The dataset was created by selecting around **9,109** samples from [Alpagasus](https://huggingface.co/datasets/mlabonne/alpagasus) dataset then translating it to `Arabic` using ChatGPT. In addition, we append that with around **891** Arabic grammar instructions from the webiste [Ask the teacher](https://learning.aljazeera.net/ar/asktheteacher). All the 10,000 samples were reviewed by around 12 reviewers. 
 
 
 <p align="center">
@@ -41,7 +41,7 @@ You can download the dataset from [HuggingFace - CIDAR](https://huggingface.co/d
 
 ```python
 from datasets import load_dataset
-cidar = load_dataset('arbml/CIDAR-V2')
+cidar = load_dataset('arbml/CIDAR')
 ```
 
 ## 📄 Sample From The Dataset:
