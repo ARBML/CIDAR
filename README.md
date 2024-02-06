@@ -1,5 +1,5 @@
 # 🌴CIDAR
-*Culturally-Relevant Instruction Dataset For Arabic*
+*Culturally Relevant Instruction Dataset For Arabic*
 <p align="center">
 <img src="https://cdn-uploads.huggingface.co/production/uploads/655e10b1c38270696b290f20/lKec96otC8VdM09SnPKL8.png" width = "150px"/>
   <p align="center"> [ <a href="#">Paper</a> - <a href="https://huggingface.co/datasets/arbml/CIDAR">HuggingFace</a> ]</p>
