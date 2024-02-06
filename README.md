@@ -2,11 +2,12 @@
 *Culturally Relevant Instruction Dataset For Arabic*
 <p align="center">
 <img src="https://cdn-uploads.huggingface.co/production/uploads/655e10b1c38270696b290f20/lKec96otC8VdM09SnPKL8.png" width = "150px"/>
-  <p align="center"> [ <a href="#">Paper</a> - <a href="https://huggingface.co/datasets/arbml/CIDAR">HuggingFace</a> ]</p>
+  <p align="center"> [ <a href="https://arxiv.org/abs/2402.03177">Paper</a> - <a href="https://huggingface.co/datasets/arbml/CIDAR">HuggingFace</a> ]</p>
 
 </p>
 
-CIDAR contains **10,000** `instructions` and their `output`. The dataset was created by selecting around **9,109** samples from [Alpagasus](https://huggingface.co/datasets/mlabonne/alpagasus) dataset then translating it to `Arabic` using ChatGPT. In addition, we append that with around **891** Arabic grammar instructions from the webiste [Ask the teacher](https://learning.aljazeera.net/ar/asktheteacher). All the 10,000 samples were reviewed by around 12 reviewers. 
+
+CIDAR contains **10,000** `instructions` and their `output`. The dataset was created by selecting around **9,109** samples from [Alpagasus](https://huggingface.co/datasets/mlabonne/alpagasus) dataset and then translating it to `Arabic` using ChatGPT. In addition, we append that with around **891** Arabic grammar instructions from the website [Ask the teacher](https://learning.aljazeera.net/ar/asktheteacher). All the 10,000 samples were reviewed by around 12 reviewers. 
 
 
 <p align="center">
@@ -15,7 +16,7 @@ CIDAR contains **10,000** `instructions` and their `output`. The dataset was cre
 
 ## 📝 CIDAR Annotation
 
-Our data annotation paltform was built on top of flask library. You can follow the next steps to run the app. 
+Our data annotation platform was built on top of Flask library. You can follow the next steps to run the app. 
 
 ### ⚡️To Run The App:
 1. Install the requirements `pip install -r requirements.txt`.
@@ -23,11 +24,11 @@ Our data annotation paltform was built on top of flask library. You can follow t
 
 ### ✨ Demo
 
-The annotation app contains two sections: `English` and `Arabic`. Reviewers can make changes on `Instruction`, `Input`, and `Output` to fix mistakes and align data with Arabic culture.
+The annotation app contains two sections: `English` and `Arabic`. Reviewers can make changes to `Instruction`, `Input`, and `Output` to fix mistakes and align data with Arabic culture.
 
 `instruction(str)`: Required instruction.
 
-`input(str)`: [Optional] input for the instruction. For example, when the instruction is find the mistake in the next sentence, the input is the sentence.
+`input(str)`: [Optional] input for the instruction. For example, when the instruction is to find the mistake in the next sentence, the input is the sentence.
 
 `output(str)`: Response for the given instruction.
 
@@ -45,7 +46,7 @@ cidar = load_dataset('arbml/CIDAR')
 ```
 
 ## 📄 Sample From The Dataset:
-This sample shows an Arabic-specific intruction which related to `البلاغة(rhetoric)` and `الإعراب(grammatical status)`. The sentence is orignally in Arabic.
+This sample shows Arabic-specific instructions related to `البلاغة(rhetoric)` and `الإعراب(grammatical status)`. The sentence is originally in Arabic.
 
  **index**: 10030
 
@@ -70,5 +71,18 @@ There were at least 12 contributors to the annotation of CIDAR. You can check th
 CIDAR is intended for **research** purposes only. The authors disclaim any responsibility for misuse and condemn any use contrary to **Arabic culture** or **Islamic values**. Even though subjected to human verification, there is no guarantee that responses are entirely aligned with Arabic culture and Islamic values. Users of the dataset are urged to exercise caution, employ critical thinking, and seek guidance from representative figures when necessary.
 
 ## 🔑 License
-CIDAR is intended and licensed for **research** use only. The dataset and weight diffs are licensed uder **CC BY NC 4.0** (LIMITED TO NON-COMMERCIAL USE). Models trained using the dataset should not be used outside of research purposes.
+CIDAR is intended and licensed for **research** use only. The dataset and weight diffs are licensed under **CC BY NC 4.0** (LIMITED TO NON-COMMERCIAL USE). Models trained using the dataset should not be used outside of research purposes.
 [Creative Commons NonCommercial (CC BY-NC 4.0)](https://creativecommons.org/licenses/by-nc/4.0/deed.en).
+
+## Citation
+
+```
+@misc{alyafeai2024cidar,
+      title={CIDAR: Culturally Relevant Instruction Dataset For Arabic}, 
+      author={Zaid Alyafeai and Khalid Almubarak and Ahmed Ashraf and Deema Alnuhait and Saied Alshahrani and Gubran A. Q. Abdulrahman and Gamil Ahmed and Qais Gawah and Zead Saleh and Mustafa Ghaleb and Yousef Ali and Maged S. Al-Shaibani},
+      year={2024},
+      eprint={2402.03177},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL}
+}
+```
