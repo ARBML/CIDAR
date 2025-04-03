@@ -71,8 +71,7 @@ There were at least 12 contributors to the annotation of CIDAR. You can check th
 CIDAR is intended for **research** purposes only. The authors disclaim any responsibility for misuse and condemn any use contrary to **Arabic culture** or **Islamic values**. Even though subjected to human verification, there is no guarantee that responses are entirely aligned with Arabic culture and Islamic values. Users of the dataset are urged to exercise caution, employ critical thinking, and seek guidance from representative figures when necessary.
 
 ## 🔑 License
-CIDAR is intended and licensed for **research** use only. The dataset and weight diffs are licensed under **CC BY NC 4.0** (LIMITED TO NON-COMMERCIAL USE). Models trained using the dataset should not be used outside of research purposes.
-[Creative Commons NonCommercial (CC BY-NC 4.0)](https://creativecommons.org/licenses/by-nc/4.0/deed.en).
+CIDAR is released under [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0).
 
 ## Citation
 
